@@ -1,6 +1,8 @@
+import java.util.Arrays;
+
 public class HeapSort {
 
-    public static void main() {
+    public static void main(String[] args) {
         int[] A = {3, 6, 10, 18, 8, 7, 25, 40};
         sort(A);
         show(A); // display the sorted result A
@@ -11,7 +13,7 @@ public class HeapSort {
     }
 
     public static void show(int[] A) {
-        
+        System.out.println(Arrays.toString(A));
     }
     // add all other functions you need
 }
