@@ -1,21 +1,23 @@
 import java.util.Arrays;
 
 public class MergeSort {
-    
+
     public static void main(String[] args) {
         int[] A = {3, 6, 10, 18, 8, 7, 25, 40};
-        mergeSort(A, 0, A.length-1);
+        sort(A, 0, A.length - 1);
         show(A); // display the sorted result A
     }
 
-    public static void mergeSort(int[] A, int left, int right) {
-        if (left < right) {
-            int middle = (left + right) / 2;
-            // mergeSort the two halves
-            mergeSort(A, left, middle);
-            mergeSort(A, middle+1, right);
+    public static void sort(int[] A, int low, int high) {
+        if (low < high) {
+            int middle = (high + low) / 2;
+            // left half
+            sort(A, low, middle);
+            // right half
+            sort(A, middle+1, high);
 
-            merge(A, left, middle, right);
+            // merge the two halves
+            merge(A, low, middle, high);
         }
     }
 
@@ -24,26 +26,59 @@ public class MergeSort {
     }
     // add all other functions you need
 
-    public static void merge(int[] A, int low, int middle, int high) {
-        int size = A.length;
-        int[] helperArray = new int[size];
-        for (int i = low; i < high; i++) {
-            helperArray[i] = A[i];
+    /**
+     * @param arr the array to be merged
+     * @param l the low index
+     * @param m the middle of the array
+     * @param h the high index
+     */
+    public static void merge(int[] arr, int l, int m, int h) {
+        // split into two half arrays
+
+        // first one is l to m
+        int[] left = new int[m - l + 1];
+        // second is m to h
+        int[] right = new int[h - m];
+
+        for (int i = 0; i < left.length; i++) {
+            left[i] = arr[l + i];
+        }  
+        for (int i = 0; i < right.length ; i++) {
+            right[i] = arr[m + i + 1];
         }
-        
-        int i = low, j = middle + 1, k = low;
-        while (i <= middle && j <= high) {
-            if (helperArray[i] <= helperArray[j]) {
-                A[k] = helperArray[i]; i++;
+
+        // compare the values in the arrays, inserting the smaller of the two in the array
+        int leftIndex = 0, rightIndex = 0;
+        // index of merged array
+        int k = l;
+        // exit once you reach the end of one of the arrays
+        while (leftIndex < left.length && rightIndex < right.length) {
+            if (left[leftIndex] < right[rightIndex]) {
+                arr[k] = left[leftIndex];
+                // move one further in the left array since its value was merged
+                leftIndex++;
             } else {
-                A[k] = helperArray[j]; j++;
+                arr[k] = right[rightIndex];
+                // move one further in the right array since its value was merged
+                rightIndex++;
             }
+            // move one space in the array
             k++;
         }
 
-        while (i <= middle) {
-            A[k] = helperArray[i];
-            k++; i++;
+        // if there is any left in the left array
+        while (leftIndex < left.length) {
+            arr[k] = left[leftIndex];
+            leftIndex++;
+            k++;
         }
+
+        // if there is any left in the right array
+        while (rightIndex < right.length) {
+            arr[k] = right[rightIndex];
+            rightIndex++;
+            k++;
+        }
+        
     }
 }
